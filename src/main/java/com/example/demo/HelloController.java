@@ -13,6 +13,7 @@ public class HelloController {
     public List<Vocab> vocabList = new ArrayList<>();
     private int correctCount = 0;
     private int totalCount = 0;
+    @FXML
     private Label accuracyLabel;
     @FXML
     private Label questionsLabel;
@@ -26,6 +27,7 @@ public class HelloController {
     private Button buttonD;
     @FXML
     private Button submitButton;
+    private Button selectedButton;
 
 
     @FXML
@@ -34,17 +36,18 @@ public class HelloController {
         Collections.shuffle(vocabList);
         resetcolor();
         loadDefinitionAndChoices();
-        submitButton.setDisable(true);
+//        submitButton.setDisable(true);
     }
 
     public void buttonclicked(ActionEvent itemClicked){
         Button buttonclicked = (Button)itemClicked.getSource() ;
         resetcolor();
+        selectedButton=buttonclicked;
         buttonclicked.setStyle("-fx-background-color: #d3d3f3;-fx-text-fill: black;-fx-font-size: 14px;");
     }
 
-    public void submitClicked(ActionEvent itemClicked){
-
+    public void submitClicked(){
+        checkAnswer(selectedButton);
     }
     public void resetcolor(){
         buttonA.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: black;-fx-font-size: 14px;");
@@ -93,11 +96,7 @@ public class HelloController {
     }
 
 
-    private void checkAnswer() {
-        Button selectedButton = (Button) ((VBox) ((BorderPane) accuracyLabel.getParent()).getCenter()).getChildren().stream()
-                .filter(button -> button.getStyle().contains("lightblue"))
-                .findFirst()
-                .orElse(null);
+    private void checkAnswer(Button selectedButton) {
 
         if (selectedButton != null) {
             String selectedTermText = selectedButton.getText();
@@ -110,6 +109,26 @@ public class HelloController {
 
             totalCount++;
             loadDefinitionAndChoices();
+        }
+    }
+
+    private String getAccuracyString(int correctCount, int totalCount) {
+        double accuracy = (double) correctCount / totalCount * 100;
+        return String.format("%.2f%%", accuracy);
+    }
+
+
+    private String getAccuracyColor(int correctCount, int totalCount) {
+        double accuracy = (double) correctCount / totalCount * 100;
+
+        if (accuracy < 70) {
+            return "red";
+        } else if (accuracy < 80) {
+            return "orange";
+        } else if (accuracy < 90) {
+            return "blue";
+        } else {
+            return "green";
         }
     }
 
