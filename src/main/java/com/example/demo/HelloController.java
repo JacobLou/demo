@@ -69,23 +69,8 @@ public class HelloController {
             buttonB.setText(termChoices.get(1));
             buttonC.setText(termChoices.get(2));
             buttonD.setText(termChoices.get(3));
-/*
-            termBox.getChildren().clear();
-
-            for (String choice : termChoices) {
-                RadioButton termButton = new RadioButton(choice);
-                termButton.setToggleGroup(termGroup);
-                termButton.setStyle("-fx-font-size: 14px;");
-                termBox.getChildren().add(termButton);
-            }
-
-            // Enable the submit button
-            Button submitButton = (Button) ((VBox) accuracyLabel.getParent()).getChildren().get(2);
             submitButton.setDisable(false);
 
-            // Clear the selection
-            termGroup.selectToggle(null);
-*/
         } else {
             // Game over, no more definitions left
             questionsLabel.setText("Game Over! Thank you for playing.");
@@ -107,22 +92,25 @@ public class HelloController {
         return termChoices;
     }
 
-//    private void checkAnswer() {
-//        Button selectedTerm = (Button) termGroup.getSelectedToggle();
-//
-//        if (selectedTerm != null) {
-//            String selectedTermText = selectedTerm.getText();
-//
-//            if (selectedTermText.equals(vocabList.get(0).word)) {
-//                correctCount++;
-//                accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
-//                accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
-//            }
-//
-//            totalCount++;
-//            loadDefinitionAndChoices();
-//        }
-//    }
 
+    private void checkAnswer() {
+        Button selectedButton = (Button) ((VBox) ((BorderPane) accuracyLabel.getParent()).getCenter()).getChildren().stream()
+                .filter(button -> button.getStyle().contains("lightblue"))
+                .findFirst()
+                .orElse(null);
+
+        if (selectedButton != null) {
+            String selectedTermText = selectedButton.getText();
+
+            if (selectedTermText.equals(vocabList.get(0).word)) {
+                correctCount++;
+                accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
+                accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
+            }
+
+            totalCount++;
+            loadDefinitionAndChoices();
+        }
+    }
 
 }
