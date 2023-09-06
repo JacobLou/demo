@@ -103,11 +103,12 @@ public class HelloController {
 
             if (selectedTermText.equals(vocabList.get(0).word)) {
                 correctCount++;
-                accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
-                accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
             }
-
             totalCount++;
+
+            accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
+            accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
+
             loadDefinitionAndChoices();
         }
     }
