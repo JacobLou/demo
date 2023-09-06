@@ -16,9 +16,10 @@
       <Label text="My Review Game">
          <font>
             <Font size="35.0" />
-         </font></Label>
+         </font>
+      </Label>
       <Separator prefHeight="2.0" prefWidth="256.0" />
-      <Label fx:id="questionsBar" alignment="CENTER" prefHeight="120.0" prefWidth="362.0" text="questionsBar" wrapText="true" />
+      <Label fx:id="questionsLabel" alignment="CENTER" prefHeight="120.0" prefWidth="362.0" text="Hellow" wrapText="true" />
       <Separator prefHeight="2.0" prefWidth="256.0" />
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="474.0">
          <children>
@@ -27,7 +28,7 @@
                   <Insets right="30.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttonB" alignment="CENTER" mnemonicParsing="false" onAction="#buttonclicked" prefHeight="26.0" prefWidth="170.0" text="Button B" />
+            <Button fx:id="buttonB" mnemonicParsing="false" onAction="#buttonclicked" prefHeight="26.0" prefWidth="170.0" text="Button B" textAlignment="CENTER" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="474.0">
@@ -40,6 +41,25 @@
             <Button fx:id="buttonD" mnemonicParsing="false" onAction="#buttonclicked" prefWidth="170.0" text="Button D" />
          </children>
       </HBox>
-      <Button mnemonicParsing="false" onAction="#submitClicked" prefWidth="100.0" text="submit" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="474.0">
+         <children>
+            <Label fx:id="accuracyLabel" prefHeight="59.0" prefWidth="195.0" text="Acuracy">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="45.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitClicked" prefWidth="100.0" text="submit">
+               <opaqueInsets>
+                  <Insets right="20.0" />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </VBox>
