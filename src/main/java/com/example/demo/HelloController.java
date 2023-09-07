@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class HelloController {
     public List<Vocab> vocabList = new ArrayList<>();
+    public List<Vocab> wordChoice = new ArrayList<>();
+
     private int correctCount = 0;
     private int totalCount = 0;
     @FXML
@@ -27,16 +29,19 @@ public class HelloController {
     private Button buttonD;
     @FXML
     private Button submitButton;
+
     private Button selectedButton;
 
 
     @FXML
     public void initialize(){
         vocabList = Vocab.generateVocab();
+        wordChoice = vocabList;
+        submitButton.setDisable(true);
         Collections.shuffle(vocabList);
         resetcolor();
         loadDefinitionAndChoices();
-//        submitButton.setDisable(true);
+        //submitButton.setDisable(true);
     }
 
     public void buttonclicked(ActionEvent itemClicked){
@@ -44,6 +49,7 @@ public class HelloController {
         resetcolor();
         selectedButton=buttonclicked;
         buttonclicked.setStyle("-fx-background-color: #d3d3f3;-fx-text-fill: black;-fx-font-size: 14px;");
+
     }
 
     public void submitClicked(){
@@ -62,23 +68,30 @@ public class HelloController {
             String definition = vocab.definition;
             String correctWord = vocab.word;
 
-
             questionsLabel.setText(definition);
+            questionsLabel.setStyle("-fx-font-size: 16px;");
 
-            List<String> termChoices = generateRandomTermChoices(vocabList, correctWord);
-            Collections.shuffle(termChoices);
+            List<String> termChoices = generateRandomTermChoices(wordChoice, correctWord);
 
             buttonA.setText(termChoices.get(0));
             buttonB.setText(termChoices.get(1));
             buttonC.setText(termChoices.get(2));
             buttonD.setText(termChoices.get(3));
+
             submitButton.setDisable(false);
 
         } else {
-            // Game over, no more definitions left
             questionsLabel.setText("Game Over! Thank you for playing.");
+            questionsLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+
+            buttonA.setDisable(true);
+            buttonB.setDisable(true);
+            buttonC.setDisable(true);
+            buttonD.setDisable(true);
+
         }
     }
+
 
     private List<String> generateRandomTermChoices(List<Vocab> vocabList, String correctWord) {
         List<String> termChoices = new ArrayList<>();
@@ -86,10 +99,18 @@ public class HelloController {
 
         termChoices.add(correctWord);
 
+        List<String> availableIncorrectWords = new ArrayList<>();
+
+        for (Vocab vocab : vocabList) {
+            if (!vocab.word.equals(correctWord)) {
+                availableIncorrectWords.add(vocab.word);
+            }
+        }
+
+        Collections.shuffle(availableIncorrectWords);
+
         for (int i = 0; i < 3; i++) {
-            int index = random.nextInt(vocabList.size());
-            String incorrectWord = vocabList.get(index).word;
-            termChoices.add(incorrectWord);
+            termChoices.add(availableIncorrectWords.get(i));
         }
 
         return termChoices;
@@ -98,7 +119,7 @@ public class HelloController {
 
     private void checkAnswer(Button selectedButton) {
 
-        if (selectedButton != null) {
+        if (!vocabList.isEmpty() && selectedButton != null) {
             String selectedTermText = selectedButton.getText();
 
             if (selectedTermText.equals(vocabList.get(0).word)) {
