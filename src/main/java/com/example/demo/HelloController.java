@@ -51,6 +51,7 @@ public class HelloController {
     public void buttonclicked(ActionEvent itemClicked){
         Button buttonclicked = (Button)itemClicked.getSource() ;
         resetcolor();
+        questionsLabel.setText(vocabList.get(currentQuestionIndex).definition.replace("___", buttonclicked.getText()));
         selectedButton=buttonclicked.getText();
         buttonclicked.setStyle("-fx-background-color: #d3d3f3;-fx-text-fill: black;-fx-font-size: 14px;");
 
@@ -76,6 +77,7 @@ public class HelloController {
             questionsLabel.setStyle("-fx-font-size: 16px;");
 
             List<String> termChoices = generateRandomTermChoices(wordChoice, correctWord);
+            Collections.shuffle(termChoices);
 
             buttonA.setText(termChoices.get(0));
             buttonB.setText(termChoices.get(1));
@@ -123,6 +125,7 @@ public class HelloController {
 
             accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
             accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
+
 
             currentQuestionIndex++;
             loadDefinitionAndChoices(currentQuestionIndex);
