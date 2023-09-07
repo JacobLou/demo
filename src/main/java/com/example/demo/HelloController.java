@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class HelloController {
+
+    @FXML
     public List<Vocab> vocabList = new ArrayList<>();
     public List<Vocab> wordChoice = new ArrayList<>();
     private int currentQuestionIndex = 0;
@@ -59,6 +61,7 @@ public class HelloController {
 
     public void submitClicked(){
         checkAnswer(selectedButton);
+        resetcolor();
     }
     public void resetcolor(){
         buttonA.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: black;-fx-font-size: 14px;");
@@ -161,6 +164,8 @@ public class HelloController {
     private void endGame() {
         questionsLabel.setText("Game Over! Thank you for playing.");
         questionsLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+
+
 
         buttonA.setDisable(true);
         buttonB.setDisable(true);
