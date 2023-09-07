@@ -11,6 +11,7 @@ import java.util.List;
 public class HelloController {
     public List<Vocab> vocabList = new ArrayList<>();
     public List<Vocab> wordChoice = new ArrayList<>();
+    private int currentQuestionIndex = 0;
 
     private int correctCount = 0;
     private int totalCount = 0;
@@ -29,18 +30,17 @@ public class HelloController {
     @FXML
     private Button submitButton;
 
-    private Button selectedButton;
+    private String selectedButton;
 
     @FXML
     public void initialize(){
         vocabList = Vocab.generateVocab();
-        wordChoice = new ArrayList<>(vocabList); // Make a copy of vocabList
+        wordChoice = new ArrayList<>(vocabList);
         submitButton.setDisable(true);
-        Collections.shuffle(vocabList);
         resetcolor();
 
         if (!vocabList.isEmpty()) {
-            loadDefinitionAndChoices();
+            loadDefinitionAndChoices(currentQuestionIndex);
         } else {
             // If there are no words, end the game immediately
             endGame();
@@ -51,7 +51,7 @@ public class HelloController {
     public void buttonclicked(ActionEvent itemClicked){
         Button buttonclicked = (Button)itemClicked.getSource() ;
         resetcolor();
-        selectedButton=buttonclicked;
+        selectedButton=buttonclicked.getText();
         buttonclicked.setStyle("-fx-background-color: #d3d3f3;-fx-text-fill: black;-fx-font-size: 14px;");
 
     }
@@ -66,9 +66,9 @@ public class HelloController {
         buttonD.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: black;-fx-font-size: 14px;");
     }
 
-    private void loadDefinitionAndChoices() {
-        if (!vocabList.isEmpty()) {
-            Vocab vocab = vocabList.remove(0);
+    private void loadDefinitionAndChoices(int questionIndex) {
+        if (questionIndex < wordChoice.size()) {
+            Vocab vocab = wordChoice.get(questionIndex);
             String definition = vocab.definition;
             String correctWord = vocab.word;
 
@@ -113,12 +113,10 @@ public class HelloController {
     }
 
 
-    private void checkAnswer(Button selectedButton) {
+    private void checkAnswer(String selectedButton) {
+        if (currentQuestionIndex < wordChoice.size() && selectedButton != null) {
 
-        if (!vocabList.isEmpty() && selectedButton != null) {
-            String selectedTermText = selectedButton.getText();
-
-            if (selectedTermText.equals(vocabList.get(0).word)) {
+            if (selectedButton.equals(vocabList.get(currentQuestionIndex).word)) {
                 correctCount++;
             }
             totalCount++;
@@ -126,7 +124,8 @@ public class HelloController {
             accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
             accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
 
-            loadDefinitionAndChoices();
+            currentQuestionIndex++;
+            loadDefinitionAndChoices(currentQuestionIndex);
 
 
         }
