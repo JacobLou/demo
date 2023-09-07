@@ -120,10 +120,14 @@ public class HelloController {
 
             if (selectedButton.equals(vocabList.get(currentQuestionIndex).word)) {
                 correctCount++;
+                submitButton.setStyle("-fx-background-color: #90EE90");
+            }
+            else {
+                submitButton.setStyle("-fx-background-color: #FFB6C1");
             }
             totalCount++;
 
-            accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount));
+            accuracyLabel.setText("Accuracy: " + getAccuracyString(correctCount, totalCount)+"\n"+"correctCout: "+correctCount+"\n"+"incorrectCount: "+(totalCount-correctCount));
             accuracyLabel.setStyle("-fx-text-fill: " + getAccuracyColor(correctCount, totalCount) + "; -fx-font-weight: bold;");
 
 
